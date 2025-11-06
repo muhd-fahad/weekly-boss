@@ -52,14 +52,9 @@ class HiveService {
     _loadAllWeeks();
   }
 
-  // Example: Updating a task within a week
-  Future<void> updateTaskInWeek(
-    int weekId,
-    int taskIndex,
-    Task updatedTask,
-  ) async {
-    final week = _weekBox.get(weekId);
 
+  Future<void> updateTaskInWeek(int weekId,int taskIndex,Task updatedTask,) async {
+    final week = _weekBox.get(weekId);
     if (week != null) {
       week.task[taskIndex] = updatedTask;
       await week.save();
