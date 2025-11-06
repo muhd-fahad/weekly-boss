@@ -15,30 +15,22 @@ class WeekDetailScreen extends StatelessWidget {
     required this.hiveService,
   });
 
-  // Helper function to add a new task to the current week
-  // MUST accept the 'title' argument
+
   void _addNewTask(Week week, String title) {
-    if (title.trim().isEmpty) return; // Prevent adding empty tasks
+    if (title.trim().isEmpty) return;
 
     final newTask = Task(
       title: title,
       description: '',
     );
 
-    // 1. Add the new task to the list
     week.task.add(newTask);
-
-    // 2. Save the parent object (Week) to persist the change via HiveService
     hiveService.addOrUpdateWeek(week);
   }
 
-  // Helper function to toggle a task's completion status and save
   void _toggleTaskCompletion(Week week, int taskIndex) {
     final task = week.task[taskIndex];
-    // Toggle the value
     task.isCompleted = !task.isCompleted;
-
-    // Save the parent Week object to update the changes in Hive
     hiveService.addOrUpdateWeek(week);
   }
 
