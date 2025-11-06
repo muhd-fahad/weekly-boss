@@ -46,7 +46,8 @@ class _HomeScreenState extends State<HomeScreen> {
       _userName = name ?? 'Guest';
     });
   }
-  // --- Sign Out Logic (Simplified) ---
+
+
   Future<void> _signOutUser() async {
     if (_userName != 'Guest') {
       await _authService.signOut();
@@ -83,9 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (sortBy.isEmpty) {
       return weeks;
     }
-
     return weeks.where((week) {
-      // Check Week ID, Task Title, Description, or Note for the query
       if (week.weekId.toString().contains(sortBy)) {
         return true;
       }
@@ -97,7 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }).toList();
   }
 
-  // --- 3. Simplified Sort Bottom Sheet UI ---
   void _showSortBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -105,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter modalSetState) {
 
-              // Helper function for readable names
+              // helper function for readable names
               String getDisplayName(WeekSortOption option) {
                 final name = option.toString().split('.').last;
                 return name.replaceAllMapped(RegExp(r'([A-Z])'), (m) => ' ${m.group(1)}').trim();
@@ -228,21 +226,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   valueListenable: hiveService.weeksNotifier,
                   builder: (context, weeks, child) {
 
-                    // 1. FILTER: Create a mutable copy and filter
                     List<Week> filteredWeeks = _filterWeeks(List.from(weeks));
-
-                    // 2. SORT: Sort the filtered list
                     _sortWeeks(filteredWeeks);
 
                     if (filteredWeeks.isEmpty) {
-                      // ... (Empty state handling) ...
                       return Center(
                         child: Padding(
                           padding: const EdgeInsets.all(40.0),
                           child: Text(
                             _searchController.text.isNotEmpty
                                 ? 'No results found for "${_searchController.text}"'
-                                : 'No weeks added yet. Tap the "+" button to start organizing!',
+                                : 'No weeks added yet. Tap the "+" button to start!',
                             textAlign: TextAlign.center,
                             style: const TextStyle(fontSize: 16, color: Colors.grey),
                           ),
@@ -258,23 +252,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: filteredWeeks.length,
                       itemBuilder: (context, index) {
                         final week = filteredWeeks[index];
-                        // Calculate task progress
                         final totalTasks = week.task.length;
-                        // You'll need a way to track completed tasks in your Task model,
-                        // for now, we'll use a placeholder for demonstration.
                         final completedTasks = week.task.where((t) => t.isCompleted).length;
 
                         final progressValue = totalTasks > 0
                             ? completedTasks / totalTasks
                             : 0.0;
-                        final isCompleted =
-                            progressValue == 1.0 && totalTasks > 0;
+                        final isCompleted = progressValue == 1.0 && totalTasks > 0;
                         final completedColor = isCompleted
                             ? Colors.green
                             : Colors.black;
 
-                        // Helper to simulate data for the progress bar (DELETE THIS LATER)
-                        // final progressDemoValue = (index % 5) / 5.0;
 
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
