@@ -48,8 +48,6 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
     super.dispose();
   }
 
-  // --- Data Management Functions ---
-  // IMPORTANT: These functions now use the 'thisWeek' object retrieved in the builder
 
   void _saveChanges(Week thisWeek) {
     final taskToUpdate = thisWeek.task[widget.taskIndex];
